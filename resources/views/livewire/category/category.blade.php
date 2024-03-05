@@ -1,6 +1,9 @@
 <div>
     <div class="col-md-8 offset-md-2 mb-2">
         <div class="card">
+            <div class="card-title text-center mt-3 mb-0">
+                <h3 class="mb-0">Categorias</h3>
+            </div>
             <div class="card-body">
                 @if (session()->has('success'))
                     <div class="alert alert-success" role="alert">
