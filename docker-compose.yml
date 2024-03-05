@@ -1,0 +1,50 @@
+version: "1.0"
+services:
+    app:
+        build:
+            args:
+                user: user
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        image: testing_laravel
+        container_name: testing_laravel_cont
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        networks:
+            - net
+    db:
+        image: mysql:8.0
+        container_name: testing_laravel_mysql
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: "${DB_DATABASE}"
+            MYSQL_ROOT_USER: "${DB_USERNAME}"
+            MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+            #MYSQL_PASSWORD: "${DB_PASSWORD}"
+            #MYSQL_USER: "${DB_USERNAME}"
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        volumes:
+            - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+        network_mode: host
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+
+    nginx:
+        image: nginx:alpine
+        container_name: nginx_cont
+        restart: unless-stopped
+        ports:
+            - 8000:80
+        volumes:
+            - ./:/var/www
+            - ./docker-compose/nginx:/etc/nginx/conf.d/
+        networks:
+            - net
+
+networks:
+    net:
+        driver: bridge
