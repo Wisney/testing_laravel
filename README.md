@@ -1,3 +1,3 @@
 # testing_laravel
 
-Testing Laravel + Liveware
+Testing Laravel + Liveware + MySQL
