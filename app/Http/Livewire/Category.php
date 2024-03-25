@@ -72,6 +72,7 @@ class Category extends Component {
     public function destroy($id) {
         try {
             Categories::find($id)->delete();
+            $this->cancel();
             session()->flash('success', "Categoria deletada com sucesso!");
         } catch (\Exception $e) {
             Log::error($e->getMessage());
